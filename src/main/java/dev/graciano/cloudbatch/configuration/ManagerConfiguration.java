@@ -1,0 +1,94 @@
+package dev.graciano.cloudbatch.configuration;
+
+import dev.graciano.cloudbatch.domain.Rental;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
+import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.step.tasklet.TaskletStep;
+import org.springframework.batch.integration.chunk.RemoteChunkingManagerStepBuilderFactory;
+import org.springframework.batch.item.file.FlatFileItemReader;
+import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
+import org.springframework.batch.item.file.mapping.RecordFieldSetMapper;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.Resource;
+import org.springframework.integration.amqp.dsl.Amqp;
+import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.channel.QueueChannel;
+import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.dsl.IntegrationFlows;
+
+@Configuration
+@Profile("manager")
+public class ManagerConfiguration {
+
+  private final JobBuilderFactory jobBuilderFactory;
+  private final RemoteChunkingManagerStepBuilderFactory stepBuilderFactory;
+
+
+  public ManagerConfiguration(JobBuilderFactory jobBuilderFactory, RemoteChunkingManagerStepBuilderFactory stepBuilderFactory) {
+    this.jobBuilderFactory = jobBuilderFactory;
+    this.stepBuilderFactory = stepBuilderFactory;
+  }
+
+  @Bean
+  public Job remoteJob() {
+    return jobBuilderFactory.get("remoteJob")
+      .start(stepOne())
+      .build();
+  }
+
+  @Bean
+  public TaskletStep stepOne() {
+    return stepBuilderFactory.get("remoteStep")
+      .chunk(100)
+      .reader(libraryReader(null))
+      .outputChannel(requests())
+      .inputChannel(responses())
+      .build();
+  }
+
+  @Bean
+  @StepScope
+  public FlatFileItemReader<Rental> libraryReader(
+    @Value("#{jobParameters['libraryFile']}") Resource resource) {
+
+    return new FlatFileItemReaderBuilder<Rental>()
+      .saveState(false)
+      .resource(resource)
+      .delimited()
+      .names("id", "title", "isbn", "user")
+      .fieldSetMapper(new RecordFieldSetMapper<>(Rental.class))
+      .build();
+  }
+
+  @Bean
+  public DirectChannel requests() {
+    return new DirectChannel();
+  }
+
+  @Bean
+  public IntegrationFlow outboundFlow(AmqpTemplate amqpTemplate) {
+    return IntegrationFlows.from(requests())
+      .handle(Amqp.outboundAdapter(amqpTemplate)
+        .routingKey("requests"))
+      .get();
+  }
+
+  @Bean
+  public QueueChannel responses() {
+    return new QueueChannel();
+  }
+
+  @Bean
+  public IntegrationFlow inboundFlow(ConnectionFactory connectionFactory) {
+    return IntegrationFlows
+      .from(Amqp.inboundAdapter(connectionFactory, "responses"))
+      .channel(responses())
+      .get();
+  }
+}
