@@ -1,0 +1,11 @@
+FROM registry.access.redhat.com/ubi8/openjdk-17:1.11
+
+ENV LANGUAGE='en_US:en'
+
+COPY --chown=185 target/*.jar /deployments/
+
+EXPOSE 8080
+
+USER 185
+
+CMD ["java", "-jar", "/deployments/cloud-batch-0.0.1-SNAPSHOT.jar", "--spring.profiles.active=manager"]

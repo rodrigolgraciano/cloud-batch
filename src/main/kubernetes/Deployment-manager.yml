@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-batch-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-batch-manager
+  template:
+    metadata:
+      labels:
+        app: cloud-batch-manager
+        env: dev
+    spec:
+      containers:
+      - name: cloud-batch-manager
+        image: eldermoraes/cloud-batch-manager
+        imagePullPolicy: Always
