@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloud-batch-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cloud-batch-worker
+  template:
+    metadata:
+      labels:
+        app: cloud-batch-worker
+        env: dev
+    spec:
+      containers:
+      - name: cloud-batch-worker
+        image: eldermoraes/cloud-batch-worker
+        imagePullPolicy: Always
