@@ -13,6 +13,9 @@ image:../images/batch_architecture.png[Batch Components]
 
 '''
 
+[caption=" ", .center, cols="<40%, ^20%, >40%", width=95%, grid=none, frame=none]
 |===
-| link:../../README.adoc[◀️ #Front Page#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:02_FirstJob.adoc[#First Job# ▶️]
+| link:../../README.adoc[◀️ #Front Page#]
+|&nbsp;
+| link:02_FirstJob.adoc[#First Job# ▶️]
 |===
