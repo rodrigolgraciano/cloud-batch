@@ -1,0 +1,18 @@
+= Spring Batch
+
+
+=== Lightweight framework
+=== Finite amount of data
+=== Not a scheduler
+=== Simple architecture
+
+'''
+
+image:../images/batch_architecture.png[Batch Components]
+
+
+'''
+
+|===
+| link:../../README.adoc[◀️ #Front Page#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:02_FirstJob.adoc[#First Job# ▶️]
+|===

@@ -1,0 +1,20 @@
+= Parallel Steps
+
+A job can have multiple steps, and there are different ways that they can be executed.
+
+Sequential Flow
+
+image::../images/flow_sequential.png[Flow Sequencial]
+
+Conditional Flow (and Decider Flow)
+
+image::../images/flow_conditional.png[Flow Conditional]
+
+Split Flow
+
+image::../images/flow_split.png[Split Flow]
+'''
+
+|===
+| link:10_Scaling.adoc[◀️ #Scaling Jobs#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:12_Async.adoc[#Async Processor & Writer# ▶️]
+|===

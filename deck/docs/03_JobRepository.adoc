@@ -1,0 +1,14 @@
+= Job Repository
+
+=== Responsible for the persistence layer
+=== Spring Batch needs the following schema
+=== This is how it keeps track of jobs, their statuses, and needed for restartability
+
+&nbsp;
+image:../images/job_repository.png[Job Repository, 400]
+
+'''
+
+|===
+| link:02_FirstJob.adoc[◀️ #First Job#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:04_Annotations.adoc[#Configuration# ▶️]
+|===

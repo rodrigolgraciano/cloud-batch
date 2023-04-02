@@ -1,0 +1,29 @@
+= Multithreading
+
+- Easy to achieve using a TaskExecutor
+- Step will read, process, and write each chunk on a separated thread
+- Order of processing isn't guaranteed
+
+[source, java, linenums]
+----
+@Bean
+public Step multithreadedStep(){
+  ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+  executor.setCorePoolSize(4);
+  executor.setMaxPoolSize(4);
+  executor.afterPropertiesSet();
+
+  return new StepBuilder("multithreadedStep", jobRepository)
+    .<Rental, Rental>chunk(100, transactionManager)
+    .reader(libraryReader(null))
+    .writer(rentalWriter(null))
+    .taskExecutor(executor)
+    .build();
+}
+----
+
+'''
+
+|===
+| link:12_Async.adoc[◀️ #Async Processor & Writer#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:14_RemotePartition.adoc[#Remote Partitioning# ▶️]
+|===

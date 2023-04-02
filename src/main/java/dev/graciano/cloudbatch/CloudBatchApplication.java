@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@EnableBatchProcessing
 @EnableBatchIntegration
 @SpringBootApplication
 public class CloudBatchApplication {
@@ -19,7 +18,7 @@ public class CloudBatchApplication {
 
 		List<String> finalArgs = new ArrayList<>(strings.size() + 1);
 		finalArgs.addAll(strings);
-		finalArgs.add("libraryFile=library.csv");
+		finalArgs.add("libraryFile=lib10k.csv");
 
 		SpringApplication.run(CloudBatchApplication.class,
 			finalArgs.toArray(new String[finalArgs.size()]));

@@ -1,0 +1,11 @@
+= Remote Chunking
+
+- Similar to Remote Partitioning
+- Data is local to workers
+- Messages don't need to be durable
+- Workers need access to JobRepository
+
+'''
+|===
+| link:13_MultiThreading.adoc[◀️ #Multithreading#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:15_RemoteChunking.adoc[#Remote Chunking# ▶️]
+|===

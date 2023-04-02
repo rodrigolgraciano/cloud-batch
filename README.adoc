@@ -1,0 +1,13 @@
+= Scaling Batch Jobs
+
+image:deck/images/Batch.png[Batch Vocabulary]
+
+~#Rodrigo&nbsp;Graciano#~ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;~#link:https://twitter.com/rodrigograciano[@rodrigograciano]#~ &nbsp; &nbsp; &nbsp; &nbsp;
+
+'''
+
+|===
+| link:deck/docs/RodrigoGraciano.adoc[◀️ #Rodrigo Graciano#]
+| &nbsp;
+| link:deck/docs/01_SpringBatch.adoc[#Spring Batch# ▶️]
+|===

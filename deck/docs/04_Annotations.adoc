@@ -1,0 +1,17 @@
+= Annotation vs XML
+
+=== Spring Batch supports XML and annotations (or the lack of it) to configure your jobs.
+
+=== [.line-through]#@EnableBatchProcessing# annotation gives you out of the box:
+. JobRepository
+. JobLauncher
+. JobRegistry
+. JobExplorer
+. JobOperator
+
+'''
+
+|===
+| link:03_JobRepository.adoc[◀️ #Job Repository#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:05_Tasklet.adoc[#Step Types# ▶️]
+|===
+

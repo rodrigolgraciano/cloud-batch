@@ -1,0 +1,16 @@
+= Writers
+
+=== Writers available from Spring Batch
+&nbsp;
+
+- Database (JDBC, Mongo, Neo4J, Hibernate, etc.)
+- Flat files (delimited and fixed-length)
+- XML, JSON
+- JMS, Kafka, Amqp (timeout)
+- Email
+
+'''
+
+|===
+| link:06_Readers.adoc[◀️ #Readers#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:08_Processors.adoc[#Processors# ▶️]
+|===

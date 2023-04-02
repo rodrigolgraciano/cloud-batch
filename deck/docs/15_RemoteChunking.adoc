@@ -1,0 +1,41 @@
+= Remote Chunking
+
+- Processing is split across multiple processes
+- The communication between manager and workers is done through some middleware
+- Middleware must be durable
+- The manager reads the data and send over the wire to the workers
+- Workers process the data and return it to the manager
+- IO intensive
+
+Manager
+
+[source, java, linenums]
+----
+public TaskletStep stepOne() {
+  return stepBuilderFactory
+    .get("remoteStep")
+    .chunk(100)
+    .reader(libraryReader(null))    (1) no processor or writer
+    .outputChannel(requests())      (2) send data
+    .inputChannel(responses())      (3) receive data
+    .build();
+}
+----
+Worker
+
+[source, java, linenums]
+----
+public IntegrationFlow integrationFlow() {
+  return this.workerBuilder
+  .itemProcessor(rentalProcessor()) (1) processor
+  .itemWriter(writer(null))         (2) writer
+  .inputChannel(requests())         (3) receive data
+  .outputChannel(responses())       (4) send data
+  .build();
+}
+----
+'''
+
+|===
+| link:14_RemotePartition.adoc[◀️ #Remote Partition#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:RunningTheExamples.adoc[#Running the Examples# ▶️]
+|===

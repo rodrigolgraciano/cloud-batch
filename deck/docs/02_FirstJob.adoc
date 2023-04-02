@@ -1,0 +1,48 @@
+= First Job
+
+Let's define our first Job. Our job will read from a file and write to a file.
+
+Job
+[source, java, linenums]
+----
+Job job = new JobBuilder("job", jobRepository)
+  .incrementer(new RunIdIncrementer())
+  .start(simpleStep())
+  .build();
+----
+
+Step
+[source, java, linenums]
+----
+Step step = new StepBuilder("step", jobRepository)
+  .<FieldSet, FieldSet>chunk(100, transactionManager)
+  .reader(reader)
+  .writer(writer)
+  .build();
+----
+
+Reader
+[source, java, linenums]
+----
+Reader reader = new FlatFileItemReaderBuilder<FieldSet>()
+  .resource(inputFile.csv)
+  .delimited()
+  .fieldSetMapper(new PassThroughFieldSetMapper<>())
+  .build();
+----
+
+Writer
+[source, java, linenums]
+----
+Writer writer = new FlatFileItemWriterBuilder<FieldSet>()
+  .resource("outputFile.csv"))
+  .delimited()
+  .fieldExtractor(new PassThroughFieldExtractor<>())
+  .build();
+----
+
+'''
+
+|===
+| link:01_SpringBatch.adoc[◀️ #Spring Batch#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:03_JobRepository.adoc[#Job Repository# ▶️]
+|===

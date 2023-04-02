@@ -1,0 +1,18 @@
+= Rodrigo Graciano
+
+image::../images/RodrigoGraciano.png[Rodrigo Graciano, 150, float="right", align="center"]
+=== Java Champion
+=== JCP Executive Committee Rep. for BNY Mellon
+=== Programming in Java since 1998
+=== JUG Leader link:https://twitter.com/nyjavasig[@NYJavaSIG]
+=== Blog: https://graciano.dev
+=== Twitter: https://twitter.com/rodrigograciano[@rodrigograciano]
+
+'''
+
+[caption=" ", .center, cols="<40%, ^20%, >40%", width=95%, grid=none, frame=none]
+|===
+| &nbsp;
+| &nbsp; link:../../README.adoc[#Back# 🔼]
+| &nbsp;
+|===

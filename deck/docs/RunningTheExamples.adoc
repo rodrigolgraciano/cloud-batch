@@ -1,0 +1,59 @@
+= About this repository
+
+This document explains how to run the examples from this repository.
+All of them read from a flat file and write to a DB.
+
+## Requirements
+
+- Java 17
+- MySQL running on port 3306
+- Import the schema.sql file to the running MySQL instance
+- Build the project `mvn clean verify`
+
+## Jobs
+
+### SimpleJob
+
+It's a simple job with a flat file reader and a JdbcWriter. It's the base code for all others jobs.
+
+To run:
+
+`java -jar cloud-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=simple`
+
+### MultithreadedJob
+
+Same as the SimpleJob but each chunk will run on a separated thread.
+
+To run:
+
+`java -jar cloud-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=multi`
+
+### AsyncJob
+
+Will run with AsyncProcessor and AsyncWriters.
+
+To run:
+
+`java -jar cloud-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=async`
+
+### Manager and Worker Configuration
+
+To run this example you will also need RabbitMQ running on port 5672, and two durable queues (requests and responses).
+
+Together they are an implementation of Remote Chunking model.
+To run:
+
+- start 1+ instances of the Spring Boot app with the profile "worker".
+
+`java -jar cloud-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=worker`
+
+- start 1 instance of the Spring Boot app with the profile "manager".
+
+`java -jar cloud-batch-0.0.1-SNAPSHOT.jar --spring.profiles.active=manager`
+
+'''
+
+|===
+| link:15_RemoteChunking.adoc[◀️ #Remote Chunking#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:../../README.adoc[#Start# 🔼]
+|===
+

@@ -1,0 +1,26 @@
+= Listeners
+
+Spring Batch has a variety of listeners ready to be used.
+
+- JobExecutionListener (before/after Job)
+- StepExecutionListener (before/after Step)
+- ItemReadListener (before/after/onReadError)
+- ItemWriteListener (before/after/onWriteError)
+- ItemProcessorListener (before/after/onProcessError)
+- ChunkListener (before/after/afterError)
+- SkipListener (onSkipIn Read/Process/Write)
+
+[source, java, linunums]
+----
+@BeforeJob
+public void beforeJob(JobExecution jobExecution){}
+
+@AfterJob
+public void afterJob(JobExecution jobExecution){}
+----
+
+'''
+
+|===
+| link:08_Processors.adoc[◀️ #Processors#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:10_Scaling.adoc[#Scaling Jobs# ▶️]
+|===

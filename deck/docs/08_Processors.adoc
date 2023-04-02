@@ -1,0 +1,15 @@
+= Processors
+
+Processors are where we add business logic. It's where we transform, filter, and validate the data.
+
+[source, java, linenums]
+----
+public ItemProcessor<FieldSet, Fieldset> {  (1) input/outputprocessor()
+  return (fieldset) -> return null;         (2) filter
+}
+----
+'''
+
+|===
+| link:07_Writers.adoc[◀️ #Writers#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:09_Listeners.adoc[#Listeners# ▶️]
+|===

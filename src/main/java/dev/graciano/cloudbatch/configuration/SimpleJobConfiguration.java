@@ -3,10 +3,11 @@ package dev.graciano.cloudbatch.configuration;
 import dev.graciano.cloudbatch.domain.Rental;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -17,7 +18,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -25,28 +26,27 @@ import javax.sql.DataSource;
 @Profile("simple")
 public class SimpleJobConfiguration {
 
-  private final JobBuilderFactory jobBuilderFactory;
-  private final StepBuilderFactory stepBuilderFactory;
+  private final BatchJobListener batchJobListener;
 
-  public SimpleJobConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory) {
-    this.jobBuilderFactory = jobBuilderFactory;
-    this.stepBuilderFactory = stepBuilderFactory;
+  public SimpleJobConfiguration(BatchJobListener batchJobListener) {
+    this.batchJobListener = batchJobListener;
   }
 
   @Bean
-  public Job simpleJob(){
-    return jobBuilderFactory
-      .get("simpleJob")
-      .incrementer( new RunIdIncrementer())
-      .start(simpleStep())
+  public Job simpleJob(JobRepository jobRepository) {
+    return new JobBuilder("simpleJob", jobRepository)
+      .incrementer(new RunIdIncrementer())
+      .listener(batchJobListener)
+      .start(simpleStep(null, null))
       .build();
   }
 
   @Bean
-  public Step simpleStep(){
-    return stepBuilderFactory
-      .get("simpleStep")
-      .<Rental,Rental>chunk(100)
+  public Step simpleStep(JobRepository jobRepository,
+                         PlatformTransactionManager transactionManager
+  ) {
+    return new StepBuilder("simpleStep", jobRepository)
+      .<Rental, Rental>chunk(5000, transactionManager)
       .reader(libraryReader(null))
       .writer(rentalWriter(null))
       .build();
@@ -56,9 +56,8 @@ public class SimpleJobConfiguration {
   @StepScope
   public FlatFileItemReader<Rental> libraryReader(
     @Value("#{jobParameters['libraryFile']}") Resource resource) {
-
     return new FlatFileItemReaderBuilder<Rental>()
-      .saveState(false)
+      .name("reader")
       .resource(resource)
       .delimited()
       .names("id", "title", "isbn", "user")

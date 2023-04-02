@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 
 import javax.sql.DataSource;
 
@@ -44,6 +43,7 @@ public class WorkerConfiguration {
       return r;
     };
   }
+
   @Bean
   public DirectChannel requests() {
     return new DirectChannel();
@@ -56,7 +56,7 @@ public class WorkerConfiguration {
 
   @Bean
   public IntegrationFlow inboundFlow(ConnectionFactory connectionFactory) {
-    return IntegrationFlows
+    return IntegrationFlow
       .from(Amqp.inboundAdapter(connectionFactory, "requests"))
       .channel(requests())
       .get();
@@ -64,7 +64,7 @@ public class WorkerConfiguration {
 
   @Bean
   public IntegrationFlow outboundFlow(AmqpTemplate template) {
-    return IntegrationFlows.from(responses())
+    return IntegrationFlow.from(responses())
       .handle(Amqp.outboundAdapter(template)
         .routingKey("responses"))
       .get();

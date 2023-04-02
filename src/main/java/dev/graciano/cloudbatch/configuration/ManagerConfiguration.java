@@ -4,8 +4,9 @@ import dev.graciano.cloudbatch.domain.Rental;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.batch.core.Job;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
+import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.integration.chunk.RemoteChunkingManagerStepBuilderFactory;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -20,25 +21,25 @@ import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 
 @Configuration
 @Profile("manager")
 public class ManagerConfiguration {
 
-  private final JobBuilderFactory jobBuilderFactory;
   private final RemoteChunkingManagerStepBuilderFactory stepBuilderFactory;
+  private BatchJobListener batchJobListener;
 
 
-  public ManagerConfiguration(JobBuilderFactory jobBuilderFactory, RemoteChunkingManagerStepBuilderFactory stepBuilderFactory) {
-    this.jobBuilderFactory = jobBuilderFactory;
+  public ManagerConfiguration(RemoteChunkingManagerStepBuilderFactory stepBuilderFactory, BatchJobListener batchJobListener) {
     this.stepBuilderFactory = stepBuilderFactory;
+    this.batchJobListener = batchJobListener;
   }
 
   @Bean
-  public Job remoteJob() {
-    return jobBuilderFactory.get("remoteJob")
+  public Job remoteJob(JobRepository jobRepository) {
+    return new JobBuilder("remoteJob", jobRepository)
       .start(stepOne())
+      .listener(batchJobListener)
       .build();
   }
 
@@ -73,7 +74,7 @@ public class ManagerConfiguration {
 
   @Bean
   public IntegrationFlow outboundFlow(AmqpTemplate amqpTemplate) {
-    return IntegrationFlows.from(requests())
+    return IntegrationFlow.from(requests())
       .handle(Amqp.outboundAdapter(amqpTemplate)
         .routingKey("requests"))
       .get();
@@ -86,7 +87,7 @@ public class ManagerConfiguration {
 
   @Bean
   public IntegrationFlow inboundFlow(ConnectionFactory connectionFactory) {
-    return IntegrationFlows
+    return IntegrationFlow
       .from(Amqp.inboundAdapter(connectionFactory, "responses"))
       .channel(responses())
       .get();

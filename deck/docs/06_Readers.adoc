@@ -1,0 +1,16 @@
+= Readers
+
+=== Spring Batch provides a series of readers.
+&nbsp;
+
+- Database (JDBC, Mongo, Neo4J, Hibernate, etc.)
+- Flat files (delimited and fixed-length)
+- XML, JSON
+- JMS, Kafka, Amqp
+- Multi-file
+
+'''
+
+|===
+| link:05_Tasklet.adoc[◀️ #Step Types#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:07_Writers.adoc[#Writers# ▶️]
+|===

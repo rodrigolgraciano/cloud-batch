@@ -1,0 +1,28 @@
+= Async Processor & Writer
+
+- ItemProcessor is executed on a new thread
+- When it completes, the Future is passed to the ItemWriter.
+
+[source, java, linenums]
+----
+@Bean
+public AsyncItemProcessor<Rental, Rental> asyncItemProcessor() {
+  AsyncItemProcessor<Rental, Rental> processor = new AsyncItemProcessor<>();
+  processor.setDelegate(processor());
+  processor.setTaskExecutor(new SimpleAsyncTaskExecutor());
+  return processor;
+}
+
+@Bean
+public AsyncItemWriter<Rental> asyncItemWriter() {
+  AsyncItemWriter<Rental> writer = new AsyncItemWriter<>();
+  writer.setDelegate(rentalWriter(null));
+  return writer;
+}
+----
+
+'''
+
+|===
+| link:11_ParallelSteps.adoc[◀️ #Parallel Step#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:13_MultiThreading.adoc[#Multithreading# ▶️]
+|===

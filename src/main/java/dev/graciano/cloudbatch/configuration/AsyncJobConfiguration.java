@@ -3,10 +3,11 @@ package dev.graciano.cloudbatch.configuration;
 import dev.graciano.cloudbatch.domain.Rental;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.integration.async.AsyncItemProcessor;
 import org.springframework.batch.integration.async.AsyncItemWriter;
 import org.springframework.batch.item.ItemProcessor;
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
@@ -28,30 +30,28 @@ import javax.sql.DataSource;
 @Profile("async")
 public class AsyncJobConfiguration {
 
-  private final JobBuilderFactory jobBuilderFactory;
-  private final StepBuilderFactory stepBuilderFactory;
+  private final BatchJobListener batchJobListener;
 
-  public AsyncJobConfiguration(JobBuilderFactory jobBuilderFactory, StepBuilderFactory stepBuilderFactory) {
-    this.jobBuilderFactory = jobBuilderFactory;
-    this.stepBuilderFactory = stepBuilderFactory;
+  public AsyncJobConfiguration(BatchJobListener batchJobListener) {
+    this.batchJobListener = batchJobListener;
   }
 
   @Bean
-  public Job asyncJob(){
-    return jobBuilderFactory
-      .get("asyncJob")
-      .incrementer( new RunIdIncrementer())
-      .start(asyncStep())
+  public Job asyncJob(JobRepository jobRepository) {
+    return new JobBuilder("asyncJob", jobRepository)
+      .incrementer(new RunIdIncrementer())
+      .start(asyncStep(null, null))
+      .listener(batchJobListener)
       .build();
   }
 
   @Bean
-  public Step asyncStep(){
-    return stepBuilderFactory
-      .get("asyncStep")
-      .<Rental,Rental>chunk(100)
+  public Step asyncStep(JobRepository jobRepository,
+                        PlatformTransactionManager transactionManager) {
+    return new StepBuilder("asyncStep", jobRepository)
+      .<Rental, Rental>chunk(100, transactionManager)
       .reader(libraryReader(null))
-      .processor((ItemProcessor)asyncItemProcessor())
+      .processor((ItemProcessor) asyncItemProcessor())
       .writer(asyncItemWriter())
       .build();
   }

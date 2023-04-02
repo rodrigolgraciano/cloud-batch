@@ -1,0 +1,15 @@
+= Scaling Batch Jobs
+
+There are 5 (Five) different ways that we can use to scale our batch jobs.
+
+- Parallel steps
+- Async Processor and Async Writer
+- Multithreaded
+- Remote Chunking
+- Remote Partitioning
+
+'''
+
+|===
+| link:09_Listeners.adoc[◀️ #Listeners#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:11_ParallelSteps.adoc[#Parallel Step# ▶️]
+|===
