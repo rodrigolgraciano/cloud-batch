@@ -4,7 +4,7 @@ There are 5 (Five) different ways that we can use to scale our batch jobs.
 
 - Parallel steps
 - Async Processor and Async Writer
-- Multithreaded
+- Multithreading
 - Remote Chunking
 - Remote Partitioning
 
