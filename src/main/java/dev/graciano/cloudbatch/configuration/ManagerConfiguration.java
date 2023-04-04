@@ -46,7 +46,7 @@ public class ManagerConfiguration {
   @Bean
   public TaskletStep stepOne() {
     return stepBuilderFactory.get("remoteStep")
-      .chunk(100)
+      .chunk(500)
       .reader(libraryReader(null))
       .outputChannel(requests())
       .inputChannel(responses())

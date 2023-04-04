@@ -51,7 +51,7 @@ public class MultithreadedJobConfiguration {
     executor.afterPropertiesSet();
 
     return new StepBuilder("multithreadedStep", jobRepository)
-      .<Rental, Rental>chunk(100, transactionManager)
+      .<Rental, Rental>chunk(500, transactionManager)
       .reader(libraryReader(null))
       .writer(rentalWriter(null))
       .taskExecutor(executor)

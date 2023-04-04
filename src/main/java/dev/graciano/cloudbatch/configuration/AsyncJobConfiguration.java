@@ -49,7 +49,7 @@ public class AsyncJobConfiguration {
   public Step asyncStep(JobRepository jobRepository,
                         PlatformTransactionManager transactionManager) {
     return new StepBuilder("asyncStep", jobRepository)
-      .<Rental, Rental>chunk(100, transactionManager)
+      .<Rental, Rental>chunk(500, transactionManager)
       .reader(libraryReader(null))
       .processor((ItemProcessor) asyncItemProcessor())
       .writer(asyncItemWriter())
@@ -90,7 +90,6 @@ public class AsyncJobConfiguration {
   @Bean
   public AsyncItemWriter<Rental> asyncItemWriter() {
     AsyncItemWriter<Rental> writer = new AsyncItemWriter<>();
-
     writer.setDelegate(rentalWriter(null));
 
     return writer;

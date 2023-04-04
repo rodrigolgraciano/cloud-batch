@@ -1,0 +1,17 @@
+= Benchmark
+
+
+## With 10k Records
+
+image:../images/performance-10k.png[10kRecordsBenchmark]
+
+## With 100k Records
+
+image:../images/performance-100k.png[100kRecordsBenchmark]
+
+'''
+
+|===
+| link:16_RunningTheExamples.adoc[◀️ #Running the Examples#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:../../README.adoc[#Start# 🔼]
+|===
+

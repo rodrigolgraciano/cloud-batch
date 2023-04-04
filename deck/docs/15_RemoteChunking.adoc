@@ -37,5 +37,5 @@ public IntegrationFlow integrationFlow() {
 '''
 
 |===
-| link:14_RemotePartition.adoc[◀️ #Remote Partition#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:RunningTheExamples.adoc[#Running the Examples# ▶️]
+| link:14_RemotePartition.adoc[◀️ #Remote Partition#] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; link:16_RunningTheExamples.adoc[#Running the Examples# ▶️]
 |===

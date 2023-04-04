@@ -46,7 +46,7 @@ public class SimpleJobConfiguration {
                          PlatformTransactionManager transactionManager
   ) {
     return new StepBuilder("simpleStep", jobRepository)
-      .<Rental, Rental>chunk(5000, transactionManager)
+      .<Rental, Rental>chunk(500, transactionManager)
       .reader(libraryReader(null))
       .writer(rentalWriter(null))
       .build();
